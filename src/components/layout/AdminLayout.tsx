@@ -10,6 +10,9 @@ import {
   LayoutDashboard,
   User,
   ChevronDown,
+  Settings,
+  HelpCircle,
+  MessageSquare,
 } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 
@@ -17,6 +20,7 @@ const sidebarLinks = [
   { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
   { name: "Exams", href: "/admin/exams", icon: BookOpen },
   { name: "Results", href: "/admin/results", icon: BarChart3 },
+  { name: "Support", href: "/admin/support", icon: MessageSquare },
 ];
 
 const MOCK_NOTIFICATIONS = [
@@ -91,20 +95,7 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
             })}
           </nav>
         </div>
-
-        {/* Sidebar bottom: user mini-card */}
-        <div className="p-4 border-t border-gray-200 dark:border-white/10">
-          <div className="flex items-center space-x-3 px-2">
-            <div className="w-9 h-9 bg-indigo-600 rounded-full flex items-center justify-center text-white font-bold text-sm shrink-0">
-              {initial}
-            </div>
-            <div className="overflow-hidden">
-              <p className="text-sm font-semibold text-gray-800 dark:text-gray-100 truncate">{user?.name ?? "Admin"}</p>
-              <p className="text-xs text-gray-500 dark:text-gray-400 truncate">{user?.email ?? ""}</p>
-            </div>
-          </div>
-        </div>
-      </aside>
+        </aside>
 
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col relative overflow-hidden">
@@ -203,6 +194,22 @@ export function AdminLayout({ children }: { children: React.ReactNode }) {
                     >
                       <User className="w-4 h-4" />
                       <span>My Profile</span>
+                    </Link>
+                    <Link
+                      href="/admin/settings"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-cyan-400 transition-all font-medium"
+                    >
+                      <Settings className="w-4 h-4" />
+                      <span>Settings</span>
+                    </Link>
+                    <Link
+                      href="/admin/help"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex items-center space-x-3 px-3 py-2 rounded-xl text-sm text-gray-700 dark:text-gray-200 hover:bg-indigo-50 dark:hover:bg-indigo-900/20 hover:text-indigo-600 dark:hover:text-cyan-400 transition-all font-medium"
+                    >
+                      <HelpCircle className="w-4 h-4" />
+                      <span>Help Center</span>
                     </Link>
                     <button
                       onClick={handleLogout}

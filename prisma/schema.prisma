@@ -63,3 +63,13 @@ model Answer {
   studentAnswer String
   isCorrect     Boolean?
 }
+
+model SupportInquiry {
+  id        String   @id @default(cuid())
+  userId    String
+  subject   String
+  message   String
+  status    String   @default("PENDING") // PENDING, RESOLVED
+  createdAt DateTime @default(now())
+}
+
