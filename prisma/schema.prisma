@@ -1,0 +1,65 @@
+generator client {
+  provider        = "prisma-client-js"
+  previewFeatures = ["driverAdapters"]
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("TURSO_DATABASE_URL")
+}
+
+model User {
+  id        String    @id @default(cuid())
+  name      String
+  email     String    @unique
+  password  String
+  role      String    @default("STUDENT") // ADMIN or STUDENT
+  attempts  Attempt[]
+  createdAt DateTime  @default(now())
+}
+
+model Exam {
+  id          String     @id @default(cuid())
+  title       String
+  duration    Int        // in minutes
+  published   Boolean    @default(false)
+  questions   Question[]
+  attempts    Attempt[]
+  createdBy   String     // referencing admin user ID
+  createdAt   DateTime   @default(now())
+}
+
+model Question {
+  id            String       @id @default(cuid())
+  examId        String
+  exam          Exam         @relation(fields: [examId], references: [id])
+  type          String       // MCQ, SHORT, CODE
+  text          String
+  options       String?      // JSON string of options for MCQ
+  correctAnswer String       // Can hold correct option, short answer, or expected code output
+  points        Int          @default(1)
+  answers       Answer[]
+}
+
+model Attempt {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id])
+  examId      String
+  exam        Exam     @relation(fields: [examId], references: [id])
+  score       Int?
+  startTime   DateTime @default(now())
+  endTime     DateTime?
+  submitted   Boolean  @default(false)
+  answers     Answer[]
+}
+
+model Answer {
+  id            String   @id @default(cuid())
+  attemptId     String
+  attempt       Attempt  @relation(fields: [attemptId], references: [id])
+  questionId    String
+  question      Question @relation(fields: [questionId], references: [id])
+  studentAnswer String
+  isCorrect     Boolean?
+}
